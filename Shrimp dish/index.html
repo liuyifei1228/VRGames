@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Shrimp Dish — VR Action Game by UnCommonSoft</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #ffffff;
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      color: #1a1a1a;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* minimalist container */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    /* header / studio mark */
+    .studio {
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: #6b6b6b;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid #eaeaea;
+      padding-bottom: 1rem;
+      display: inline-block;
+    }
+
+    /* main title */
+    .game-title {
+      font-size: clamp(3rem, 12vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin: 0.5rem 0 1rem 0;
+      color: #000000;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #4a4a4a;
+      margin-bottom: 2.5rem;
+      border-left: 3px solid #d4d4d4;
+      padding-left: 1rem;
+    }
+
+    /* description text */
+    .description {
+      margin: 2rem 0 2.5rem 0;
+    }
+
+    .description p {
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+      color: #2c2c2c;
+      font-weight: 400;
+    }
+
+    .highlight {
+      font-weight: 500;
+      background: linear-gradient(120deg, #f0f0f0 0%, #f0f0f0 40%, transparent 60%);
+      padding: 0 0.1rem;
+    }
+
+    .cylinder-line {
+      font-style: italic;
+      color: #0a0a0a;
+      background: #f8f8f8;
+      display: inline-block;
+      padding: 0.1rem 0.3rem;
+      border-radius: 8px;
+    }
+
+    /* minimal info row (platform / release) */
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #ececec;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .info-item svg {
+      opacity: 0.7;
+    }
+
+    /* footer */
+    .footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #8f8f8f;
+      letter-spacing: 0.3px;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 2rem;
+    }
+
+    /* very subtle decorative line (cylinder abstract) */
+    .decor-cyl {
+      margin-top: 2.5rem;
+      opacity: 0.3;
+      text-align: center;
+    }
+
+    .decor-cyl svg {
+      max-width: 56px;
+      height: auto;
+    }
+
+    /* responsive */
+    @media (max-width: 640px) {
+      .container {
+        padding: 2rem 1.2rem 3rem;
+      }
+      .description p {
+        font-size: 1rem;
+      }
+      .tagline {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- studio identity -->
+    <div class="studio">UnCommonSoft</div>
+
+    <!-- game title -->
+    <h1 class="game-title">Shrimp Dish</h1>
+    <div class="tagline">VR · Mantis Strike · Total Mayhem</div>
+
+    <!-- description block (exact provided text, structured for readability) -->
+    <div class="description">
+      <p>You are no longer human, but a mantis shrimp with armored body and fists as sharp as bullets. In the perilous ecosystem of an aquarium, every fish is your prey. Defend your territory with lightning-fast punches — and drive them all out!</p>
+      <p><span class="cylinder-line">Fly everything out of the cylinder.</span> Build up your power to send flying any fish that dares to approach you. Go ahead and show them just how formidable you are!</p>
+    </div>
+
+    <!-- minimal platform & info (just to give a clean professional look) -->
+    <div class="info-row">
+      <div class="info-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 5H19V19H5V5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+          <path d="M9 2V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M15 2V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M8 12H16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M8 16H13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span>SteamVR · Meta Quest · PS VR2</span>
+      </div>
+      <div class="info-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M12 8V12L14 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span>Action · Physics-based combat</span>
+      </div>
+    </div>
+
+    <!-- subtle abstract cylinder reference (minimalist nod to "cylinder") -->
+    <div class="decor-cyl">
+      <svg width="48" height="28" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="40" cy="10" rx="36" ry="6" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2 2"/>
+        <path d="M4 10 L4 30" stroke="currentColor" stroke-width="0.8"/>
+        <path d="M76 10 L76 30" stroke="currentColor" stroke-width="0.8"/>
+        <ellipse cx="40" cy="30" rx="36" ry="6" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2 2"/>
+      </svg>
+    </div>
+
+    <!-- footer with company & year -->
+    <div class="footer">
+      © 2026 UnCommonSoft. All rights reserved.<br>
+      “Shrimp Dish” — unleash the fury of the reef.
+    </div>
+  </div>
+</body>
+</html>
