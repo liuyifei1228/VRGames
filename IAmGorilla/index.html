@@ -1,1 +1,587 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAmGorilla - Solo VR Physics Playground | UnCommonSoft</title>
+    <style>
+        :root {
+            --bg: #1a1a1a;
+            --surface: #242424;
+            --surface-light: #2e2e2e;
+            --text: #e8e8e8;
+            --text-secondary: #b0b0b0;
+            --accent: #f0a040;
+            --accent-glow: #f0a04066;
+            --sakura: #f4a7b9;
+            --honey: #f5c842;
+            --danger: #c0392b;
+            --danger-glow: #c0392b55;
+            --wood: #b8733b;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --max-width: 1100px;
+            --transition: 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, #2a2018 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 55%, #1f1a22 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 80%, #1a1f18 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 24px 40px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--surface-light);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 6vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #f0a040 0%, #f7c46c 40%, #e8872b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(240, 160, 64, 0.35));
+        }
+
+        .hero .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 8px;
+            font-weight: 400;
+        }
+
+        .hero .company-tag {
+            font-size: 0.85rem;
+            color: #777;
+            letter-spacing: 0.06em;
+            margin-top: 4px;
+        }
+
+        .hero .monkey-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 8px;
+            animation: bob 2.5s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-14px);
+            }
+            60% {
+                transform: translateY(-4px);
+            }
+            85% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title .emoji-marker {
+            font-size: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius);
+            padding: 28px 28px 24px;
+            margin-bottom: 20px;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        }
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .card .card-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .mechanism-highlight {
+            background: var(--surface);
+            border: 1px solid rgba(240, 160, 64, 0.3);
+            border-radius: var(--radius);
+            padding: 28px 28px 24px;
+            margin-bottom: 28px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(240, 160, 64, 0.06);
+        }
+        .mechanism-highlight .glow-dot {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 16px var(--accent-glow);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 10px var(--accent-glow);
+            }
+            50% {
+                box-shadow: 0 0 28px var(--accent), 0 0 50px var(--accent-glow);
+            }
+        }
+        .mechanism-highlight h3 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .areas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .area-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius);
+            padding: 24px 22px 20px;
+            transition: all var(--transition);
+        }
+        .area-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+        }
+        .area-card .area-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .area-card .area-emoji {
+            font-size: 2rem;
+        }
+        .area-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .area-card .area-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-top: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #aaa;
+        }
+        .area-card.sakura-card {
+            border-left: 3px solid var(--sakura);
+        }
+        .area-card.parkour-card {
+            border-left: 3px solid var(--wood);
+        }
+        .area-card.hub-card {
+            border-left: 3px solid var(--accent);
+        }
+
+        .upcoming-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .upcoming-card {
+            background: var(--surface);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius);
+            padding: 24px 22px 20px;
+            position: relative;
+            opacity: 0.85;
+            transition: all var(--transition);
+        }
+        .upcoming-card:hover {
+            opacity: 1;
+            border-style: solid;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .upcoming-card .construction-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #999;
+            margin-bottom: 10px;
+        }
+        .upcoming-card.terrifying-card {
+            border-left: 3px dashed var(--danger);
+        }
+        .upcoming-card.terrifying-card .construction-badge {
+            background: rgba(192, 57, 43, 0.2);
+            color: #e07060;
+        }
+        .upcoming-card.honeycomb-card {
+            border-left: 3px dashed var(--honey);
+        }
+        .upcoming-card.honeycomb-card .construction-badge {
+            background: rgba(245, 200, 66, 0.15);
+            color: #f5d060;
+        }
+        .glow-flicker {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: flicker 1.8s ease-in-out infinite;
+        }
+        .glow-flicker.red {
+            background: var(--danger);
+            box-shadow: 0 0 14px var(--danger-glow);
+        }
+        .glow-flicker.gold {
+            background: var(--honey);
+            box-shadow: 0 0 14px rgba(245, 200, 66, 0.5);
+        }
+        @keyframes flicker {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            40% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.9;
+            }
+        }
+
+        .comment-section {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius);
+            padding: 28px 28px 24px;
+            margin-top: 10px;
+        }
+        .comment-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .comment-section .comment-hint {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .comment-input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .comment-input-row input {
+            flex: 1;
+            min-width: 220px;
+            background: var(--surface-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .comment-input-row input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(240, 160, 64, 0.1);
+        }
+        .comment-input-row input::placeholder {
+            color: #666;
+        }
+        .comment-input-row button {
+            background: var(--accent);
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .comment-input-row button:hover {
+            background: #f5b855;
+            box-shadow: 0 4px 18px rgba(240, 160, 64, 0.35);
+            transform: translateY(-1px);
+        }
+        .comment-input-row button:active {
+            transform: scale(0.97);
+        }
+        .submitted-message {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: #6aaa6a;
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+        .submitted-message.visible {
+            display: flex;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 24px 30px;
+            color: #555;
+            font-size: 0.8rem;
+            letter-spacing: 0.03em;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 20px;
+        }
+        .footer .company-name {
+            color: #777;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 40px 16px 28px;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .container {
+                padding: 0 14px 40px;
+            }
+            .card,
+            .mechanism-highlight,
+            .comment-section {
+                padding: 20px 16px 18px;
+            }
+            .comment-input-row {
+                flex-direction: column;
+            }
+            .comment-input-row button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+
+        <header class="hero">
+            <span class="monkey-icon">🦍</span>
+            <h1>IAmGorilla</h1>
+            <p class="subtitle">A solo VR physics playground where you are in complete control.<br>No complex systems, no tedious storylines — just the purest, most addictive limb-based locomotion mechanics.</p>
+            <p class="company-tag">— UnCommonSoft</p>
+        </header>
+
+        <main class="container">
+
+            <div class="mechanism-highlight">
+                <div class="glow-dot"></div>
+                <span style="font-size:1.8rem;">🐒</span>
+                <h3>Physical hand-walking locomotion</h3>
+                <p>The game uses a movement system fully based on physical collisions. No rigid thumbsticks — push yourself up with your hands, slap, push, and pull, relying entirely on real physics feedback to leap and climb through the world like a gorilla!</p>
+            </div>
+
+            <div class="section-title">
+                <span class="emoji-marker">🌸</span> Available areas now open
+            </div>
+            <div class="areas-grid">
+                <div class="area-card hub-card">
+                    <div class="area-header">
+                        <span class="area-emoji">🏛️</span>
+                        <h4>Central Hub</h4>
+                    </div>
+                    <p>Your personal staging ground. Wander along the paths, get a feel for ground-slapping between waterfalls and wooden bridges. Don't forget to browse the central shop — it's stocked with your favorite honey-themed skins, ready to set out with you.</p>
+                    <span class="area-tag">🛍️ Central Shop · Honey Skins</span>
+                </div>
+                <div class="area-card sakura-card">
+                    <div class="area-header">
+                        <span class="area-emoji">🌸</span>
+                        <h4>Sakura Landscape</h4>
+                    </div>
+                    <p>A pure, open natural environment. Among enormous pink cherry blossom trees and a tranquil lake, you can roam and relax without distraction, quietly soaking in the pink scenery.</p>
+                    <span class="area-tag">🌿 Open nature · Relax & wander</span>
+                </div>
+                <div class="area-card parkour-card">
+                    <div class="area-header">
+                        <span class="area-emoji">🪵</span>
+                        <h4>Large Tree Parkour</h4>
+                    </div>
+                    <p>The ultimate vertical movement challenge! A series of staggered platforms, slopes, and suspended tree rings form a parkour trial that delivers the most direct physical feedback.</p>
+                    <span class="area-tag">🏃 Vertical challenge · Extreme agility</span>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <span class="emoji-marker">🚧</span> Explore the unknown future
+            </div>
+            <div class="upcoming-grid">
+                <div class="upcoming-card terrifying-card">
+                    <div class="glow-flicker red"></div>
+                    <span class="construction-badge">🚧 Unreleased · Under construction</span>
+                    <h4 style="margin-top:4px;">🕳️ Terrifying Map</h4>
+                    <p style="font-size:0.9rem;color:#c0a0a0;">Horror mine cave — bathed in eerie, unsettling light. A brand-new solo underground horror escape is on its way!</p>
+                </div>
+                <div class="upcoming-card honeycomb-card">
+                    <div class="glow-flicker gold"></div>
+                    <span class="construction-badge">🚧 Unreleased · Under construction</span>
+                    <h4 style="margin-top:4px;">🍯 Honeycomb</h4>
+                    <p style="font-size:0.9rem;color:#c0b080;">Honeycomb world — flowing with golden nectar. Various little animals are already on their way!</p>
+                </div>
+            </div>
+
+            <div class="comment-section" id="commentSection">
+                <h3>💬 Tell us what you think</h3>
+                <p class="comment-hint">What fun gorilla skins or hilarious props would you like to see in the next phase? Shout it out below — we'll weave your ideas into future updates!</p>
+                <div class="comment-input-row">
+                    <input type="text" id="commentInput" placeholder="e.g. banana rocket launcher skin, sunglasses gorilla, inflatable hammer…" maxlength="200" aria-label="Comment input">
+                    <button id="submitBtn" type="button">📢 Submit idea</button>
+                </div>
+                <div class="submitted-message" id="submittedMsg">
+                    <span>✅</span> Thank you for your suggestion! We carefully consider every idea.
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="footer">
+            <span class="company-name">UnCommonSoft</span> &copy; 2026 · IAmGorilla · All rights reserved.
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            const input = document.getElementById('commentInput');
+            const btn = document.getElementById('submitBtn');
+            const msg = document.getElementById('submittedMsg');
+
+            function submitComment() {
+                const text = input.value.trim();
+                if (text.length === 0) {
+                    input.focus();
+                    input.style.borderColor = '#c0392b';
+                    setTimeout(() => {
+                        input.style.borderColor = '';
+                    }, 800);
+                    return;
+                }
+                msg.classList.add('visible');
+                input.value = '';
+                input.focus();
+                clearTimeout(msg._timeout);
+                msg._timeout = setTimeout(() => {
+                    msg.classList.remove('visible');
+                }, 3500);
+            }
+
+            btn.addEventListener('click', submitComment);
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitComment();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
