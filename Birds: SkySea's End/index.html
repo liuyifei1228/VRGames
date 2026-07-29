@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birds: SkySea's End | UnCommonSoft</title>
+    <style>
+        :root {
+            --bg: #0a1620;
+            --surface: #0f1f2e;
+            --surface-light: #152a3a;
+            --text: #e0eaf2;
+            --text-secondary: #9bb5c9;
+            --accent: #5db8e8;
+            --accent-glow: #5db8e866;
+            --gold: #f0c060;
+            --gold-glow: #f0c06055;
+            --sky-top: #7ec8f8;
+            --sea-deep: #1a4a6a;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --max-width: 1100px;
+            --transition: 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 10%, #1a3a50 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 30%, #1a4050 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 85%, #0c2535 0%, transparent 55%),
+                radial-gradient(ellipse at 30% 60%, #1a3550 0%, transparent 45%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.85;
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 64px 24px 44px;
+            position: relative;
+        }
+
+        .hero .wings-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 4px;
+            animation: floatWings 3s ease-in-out infinite;
+            filter: drop-shadow(0 6px 20px rgba(120, 180, 220, 0.4));
+        }
+
+        @keyframes floatWings {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-16px) rotate(-2deg);
+            }
+            50% {
+                transform: translateY(-6px) rotate(0deg);
+            }
+            75% {
+                transform: translateY(-18px) rotate(2deg);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 6.5vw, 4.8rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #b8dff8 0%, #5db8e8 30%, #7ec8f8 60%, #e8f4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 3px 12px rgba(93, 184, 232, 0.4));
+        }
+
+        .hero .tagline {
+            font-size: 1.3rem;
+            color: #c8dff0;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            margin-bottom: 8px;
+        }
+
+        .hero .company-tag {
+            font-size: 0.85rem;
+            color: #6a8a9e;
+            letter-spacing: 0.07em;
+            margin-top: 4px;
+        }
+
+        /* Container */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        /* Section titles */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #d0e6f8;
+        }
+        .section-title .emoji-marker {
+            font-size: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 28px 28px 24px;
+            margin-bottom: 20px;
+            transition: border-color var(--transition), box-shadow var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        /* Highlight card */
+        .highlight-card {
+            background: var(--surface);
+            border: 1px solid rgba(93, 184, 232, 0.3);
+            border-radius: var(--radius);
+            padding: 28px 28px 24px;
+            margin-bottom: 28px;
+            position: relative;
+            box-shadow: 0 0 45px rgba(93, 184, 232, 0.07);
+        }
+        .highlight-card .glow-dot {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 18px var(--accent-glow);
+            animation: pulseDot 2.2s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%,
+            100% {
+                box-shadow: 0 0 10px var(--accent-glow);
+            }
+            50% {
+                box-shadow: 0 0 30px var(--accent), 0 0 55px var(--accent-glow);
+            }
+        }
+        .highlight-card h3 {
+            color: var(--accent);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        /* Feature grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 24px 22px 20px;
+            transition: all var(--transition);
+            position: relative;
+        }
+        .feature-card:hover {
+            border-color: rgba(255, 255, 255, 0.14);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+        }
+        .feature-card .feature-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .feature-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .feature-card.race-card {
+            border-left: 3px solid #f0a050;
+        }
+        .feature-card.explore-card {
+            border-left: 3px solid #5db8e8;
+        }
+        .feature-card.leaderboard-card {
+            border-left: 3px solid #f0c060;
+        }
+        .feature-card.reward-card {
+            border-left: 3px solid #c8a0f0;
+        }
+
+        /* Community section */
+        .community-section {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 28px 28px 24px;
+            margin-top: 10px;
+        }
+        .community-section h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .community-section .community-hint {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .community-input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .community-input-row input {
+            flex: 1;
+            min-width: 220px;
+            background: var(--surface-light);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .community-input-row input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(93, 184, 232, 0.08);
+        }
+        .community-input-row input::placeholder {
+            color: #4a6070;
+        }
+        .community-input-row button {
+            background: var(--accent);
+            color: #0a1620;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .community-input-row button:hover {
+            background: #7ec8f8;
+            box-shadow: 0 4px 20px rgba(93, 184, 232, 0.4);
+            transform: translateY(-1px);
+        }
+        .community-input-row button:active {
+            transform: scale(0.97);
+        }
+        .submitted-message {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: #6ab8a0;
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+        .submitted-message.visible {
+            display: flex;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px 24px 30px;
+            color: #4a6070;
+            font-size: 0.8rem;
+            letter-spacing: 0.03em;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 20px;
+        }
+        .footer .company-name {
+            color: #6a8a9e;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 44px 16px 32px;
+            }
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            .hero .wings-icon {
+                font-size: 3rem;
+            }
+            .container {
+                padding: 0 14px 40px;
+            }
+            .card,
+            .highlight-card,
+            .community-section {
+                padding: 20px 16px 18px;
+            }
+            .community-input-row {
+                flex-direction: column;
+            }
+            .community-input-row button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+
+        <header class="hero">
+            <span class="wings-icon">🪽🪽</span>
+            <h1>Birds: SkySea's End</h1>
+            <p class="tagline">Have the wings of a bird!</p>
+            <p class="company-tag">— UnCommonSoft</p>
+        </header>
+
+        <main class="container">
+
+            <!-- Core experience highlight -->
+            <div class="highlight-card">
+                <div class="glow-dot"></div>
+                <span style="font-size:1.8rem;">🪽</span>
+                <h3>Have the wings of a bird!</h3>
+                <p>In this game, you'll become your favorite bird, flapping your wings between the sky and sea to soar through the skies.</p>
+            </div>
+
+            <!-- Game modes & features -->
+            <div class="section-title">
+                <span class="emoji-marker">✨</span> Game modes & progression
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card race-card">
+                    <span class="feature-icon">🏁</span>
+                    <h4>Flight races</h4>
+                    <p>Compete in flight races with other players.</p>
+                </div>
+                <div class="feature-card explore-card">
+                    <span class="feature-icon">🌊</span>
+                    <h4>Single-player exploration</h4>
+                    <p>Explore freely in single-player mode.</p>
+                </div>
+                <div class="feature-card leaderboard-card">
+                    <span class="feature-icon">🏆</span>
+                    <h4>Conquer leaderboards</h4>
+                    <p>Conquer leaderboards to unlock new birds.</p>
+                </div>
+                <div class="feature-card reward-card">
+                    <span class="feature-icon">✨</span>
+                    <h4>Shiny rewards</h4>
+                    <p>Earn shiny headwear and decorations for your achievements.</p>
+                </div>
+            </div>
+
+            <!-- Community call-to-action -->
+            <div class="community-section" id="communitySection">
+                <h3>💬 Share your ideas</h3>
+                <p class="community-hint">Share your ideas – let's all become free-flying birds!</p>
+                <div class="community-input-row">
+                    <input type="text" id="ideaInput" placeholder="e.g. new bird species, sky race tracks, feather patterns…" maxlength="200" aria-label="Share your idea">
+                    <button id="submitIdeaBtn" type="button">🕊️ Submit idea</button>
+                </div>
+                <div class="submitted-message" id="submittedMsg">
+                    <span>✅</span> Thank you for sharing! Every idea helps shape the skies.
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="footer">
+            <span class="company-name">UnCommonSoft</span> &copy; 2026 · Birds: SkySea's End · All rights reserved.
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            const input = document.getElementById('ideaInput');
+            const btn = document.getElementById('submitIdeaBtn');
+            const msg = document.getElementById('submittedMsg');
+
+            function submitIdea() {
+                const text = input.value.trim();
+                if (text.length === 0) {
+                    input.focus();
+                    input.style.borderColor = '#c06050';
+                    setTimeout(() => {
+                        input.style.borderColor = '';
+                    }, 800);
+                    return;
+                }
+                msg.classList.add('visible');
+                input.value = '';
+                input.focus();
+                clearTimeout(msg._timeout);
+                msg._timeout = setTimeout(() => {
+                    msg.classList.remove('visible');
+                }, 3500);
+            }
+
+            btn.addEventListener('click', submitIdea);
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitIdea();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
